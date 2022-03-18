@@ -1,3 +1,10 @@
+# address rinkeby 0x88E95624f03251970501Da6e3fA6f93F93B06890 with which I did those exercices
+
+ticker :hqfPC
+supply :643610400000000000000000000
+MinerERC20 0xF1e4055693450e1A9f2f539E9ee3Ae959cCD0d43
+
+
 # AMM 101
 
 ## Introduction
