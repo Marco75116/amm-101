@@ -8,6 +8,10 @@ MineERC20 0xF1e4055693450e1A9f2f539E9ee3Ae959cCD0d43
 
 This is a contract solution that shows `ExerciceSolution.swapYourTokenForEth()` works alone outside of `ex9_contractCanSwapVsDummyToken()` 0xC9f54eC8C1f07F084D93C45Cf9C37a8bC6FdB7E6.
 
+This is a contract solution that shows `ExerciceSolution.addLiquidity()` works alone outside of `ex10_contractCanProvideLiquidity()` 0xb43720A2535123f5D3Cc8514E722eE827218C3A5.
+
+
+
 
 # AMM 101
 
