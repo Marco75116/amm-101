@@ -6,6 +6,7 @@ var ERC20 = artifacts.require("DummyToken.sol");
 var evaluator = artifacts.require("Evaluator.sol");
 var mineERC20 = artifacts.require("MineERC20.sol");
 var uni = artifacts.require("./utils/IUniswapV2Factory.sol");
+var exerciceSolution = artifacts.require("ExerciceSolution.sol");
 
 module.exports = (deployer, network, accounts) => {
   deployer.then(async () => {
@@ -62,12 +63,19 @@ async function getBalanceTdToken(deployer, network, accounts) {
 
 async function deployMineERC20(deployer, network, accounts, ticker, supply) {
   MineERC20 = await mineERC20.new(ticker, ticker, supply);
-  console.log("MinerERC20 " + MineERC20.address);
+  console.log("MineERC20 " + MineERC20.address);
+}
+
+async function deployExerciceSolutions(deployer, network, accounts, MineERC20) {
+  ExerciceSolution = await exerciceSolution.new(MineERC20.address);
+  console.log("ExerciceSolution " + ExerciceSolution.address);
 }
 
 async function doTd(deployer, network, accounts) {
   console.log("Stating Td Amm101...");
   await getBalanceTdToken(deployer, network, accounts);
+
+  MineERC20 = await mineERC20.at("0xF1e4055693450e1A9f2f539E9ee3Ae959cCD0d43");
 
   //   console.log("-------Exercice1---------");
   //   await Evaluator.ex1_showIHaveTokens({ from: account });
@@ -91,20 +99,91 @@ async function doTd(deployer, network, accounts) {
   //   await Evaluator.ex6b_testErc20TickerAndSupply({ from: account });
   //   await getBalanceTdToken(deployer, network, accounts);
 
-  console.log("-------Exercice7---------");
-  const uniswapV2Factory = await uni.at(
-    "0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f"
-  );
-  const addressResult = await uniswapV2Factory.createPair(
-    "0xF1e4055693450e1A9f2f539E9ee3Ae959cCD0d43",
-    "0xc778417e063141139fce010982780140aa0cd5ab"
-  );
-  console.log(addressResult.address);
+  //   console.log("-------Exercice7---------");
+  //   const uniswapV2Factory = await uni.at(
+  //     "0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f"
+  //   );
+  // const addressResult = await uniswapV2Factory.createPair(
+  //   "0xF1e4055693450e1A9f2f539E9ee3Ae959cCD0d43",
+  //   "0xc778417e063141139fce010982780140aa0cd5ab"
+  // );
+  // console.log(addressResult.address);
 
-  await Evaluator.submitErc20("0xF1e4055693450e1A9f2f539E9ee3Ae959cCD0d43", {
+  //   await Evaluator.submitErc20("0xF1e4055693450e1A9f2f539E9ee3Ae959cCD0d43", {
+  //     from: account,
+  //   });
+
+  //   await Evaluator.ex7_tokenIsTradableOnUniswap({ from: account });
+  //   await getBalanceTdToken(deployer, network, accounts);
+
+  //   const addressResult = await uniswapV2Factory.getPair(
+  //     "0xc778417e063141139fce010982780140aa0cd5ab",
+  //     "0xF1e4055693450e1A9f2f539E9ee3Ae959cCD0d43"
+  //   );
+  //   console.log(addressResult);
+
+  // console.log("-------Exercice8---------");
+
+  // //   await deployExerciceSolutions(deployer, network, accounts, MineERC20);
+  // ExerciceSolution = await exerciceSolution.new(
+  //   MineERC20.address,
+  //   "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+  //   {
+  //     from: account,
+  //   }
+  // );
+  // console.log("ExerciceSolution " + ExerciceSolution.address);
+
+  // await MineERC20.approve(ExerciceSolution.address, "2000000000000000000000", {
+  //   from: account,
+  // });
+  // await MineERC20.transfer(ExerciceSolution.address, "2000000000000000000000", {
+  //   from: account,
+  // });
+
+  // await ExerciceSolution.swapYourTokenForEth({ from: account });
+
+  // await Evaluator.submitExercice(ExerciceSolution.address, { from: account });
+  // await Evaluator.ex8_contractCanSwapVsEth({ from: account });
+  // await getBalanceTdToken(deployer, network, accounts);
+
+  // console.log("-------Exercice9---------");
+
+  // ExerciceSolution = await exerciceSolution.new(
+  //   MineERC20.address,
+  //   "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+  //   { from: account }
+  // );
+  // console.log("ExerciceSolution " + ExerciceSolution.address);
+
+  // await MineERC20.transfer(ExerciceSolution.address, "2000000000000000000000", {
+  //   from: account,
+  // });
+
+  // await Evaluator.submitExercice(ExerciceSolution.address, { from: account });
+
+  // // await ExerciceSolution.swapYourTokenForDummyToken();
+  // await Evaluator.ex9_contractCanSwapVsDummyToken({ from: account });
+  // await getBalanceTdToken(deployer, network, accounts);
+
+  console.log("-------Exercice10---------");
+
+  ExerciceSolution = await exerciceSolution.new(
+    MineERC20.address,
+    "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+    { from: account, value: "1000000000000000" }
+  );
+  console.log("ExerciceSolution " + ExerciceSolution.address);
+
+  await MineERC20.transfer(ExerciceSolution.address, "2000000000000000000000", {
     from: account,
   });
 
-  await Evaluator.ex7_tokenIsTradableOnUniswap({ from: account });
-  await getBalanceTdToken(deployer, network, accounts);
+  // await Evaluator.submitExercice(ExerciceSolution.address, { from: account });
+
+  await ExerciceSolution.swapYourTokenForEth();
+
+  await ExerciceSolution.addLiquidity();
+  // await Evaluator.ex9_contractCanSwapVsDummyToken({ from: account });
+  // await getBalanceTdToken(deployer, network, accounts);
 }
