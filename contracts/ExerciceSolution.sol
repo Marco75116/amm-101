@@ -3,6 +3,8 @@ pragma solidity ^0.6.0;
 import "./utils/IUniswapV2Router.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "./MineERC20.sol";
+import "./Token.sol";
+import "./utils/IUniswapV2Factory.sol";
 
 contract ExerciceSolution {
     IUniswapV2Router public uniswap_v2_router;
@@ -52,16 +54,75 @@ contract ExerciceSolution {
         );
     }
 
-    function addLiquidity() external {
+    function addLiquidityReverted() external {
         mineErc20.approve(address(uniswap_v2_router), 10000 ether);
 
         uniswap_v2_router.addLiquidityETH(
             address(mineErc20),
-            100,
+            1 ether,
             1,
             1,
             address(this),
             block.timestamp
         );
+    }
+
+    function addLiquidity() external {
+        Token token = Token(weth);
+        token.approve(address(uniswap_v2_router), 100 ether);
+        mineErc20.approve(address(uniswap_v2_router), 10000 ether);
+
+        uniswap_v2_router.addLiquidity(
+            address(mineErc20),
+            weth,
+            92 ether,
+            0.05 ether,
+            1,
+            1,
+            address(this),
+            block.timestamp
+        );
+    }
+
+    event Log(string description, uint256 amount);
+
+    function withdrawLiquidity() external {
+        IUniswapV2Factory factory = IUniswapV2Factory(
+            0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f
+        );
+        address pair = factory.getPair(address(mineErc20), weth);
+        Token lpToken = Token(pair);
+        uint256 liquidity = lpToken.balanceOf(address(this));
+        lpToken.approve(address(uniswap_v2_router), liquidity);
+
+        (uint256 amountA, uint256 amountB) = uniswap_v2_router.removeLiquidity(
+            address(mineErc20),
+            weth,
+            liquidity,
+            1,
+            1,
+            address(this),
+            block.timestamp
+        );
+
+        // test
+        emit Log("amountA", amountA);
+        emit Log("amountB", amountB);
+    }
+
+    function withdrawLiquiditydeux() external {
+        (uint256 amountA, uint256 amountB) = uniswap_v2_router
+            .removeLiquidityETH(
+                address(mineErc20),
+                0.001 ether,
+                1,
+                1,
+                address(this),
+                block.timestamp
+            );
+
+        // test
+        emit Log("amountA", amountA);
+        emit Log("amountB", amountB);
     }
 }
