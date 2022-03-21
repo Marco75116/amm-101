@@ -7,6 +7,7 @@ var evaluator = artifacts.require("Evaluator.sol");
 var mineERC20 = artifacts.require("MineERC20.sol");
 var uni = artifacts.require("./utils/IUniswapV2Factory.sol");
 var exerciceSolution = artifacts.require("ExerciceSolution.sol");
+var tokenStandard = artifacts.require("Token.sol");
 
 module.exports = (deployer, network, accounts) => {
   deployer.then(async () => {
@@ -166,24 +167,35 @@ async function doTd(deployer, network, accounts) {
   // await Evaluator.ex9_contractCanSwapVsDummyToken({ from: account });
   // await getBalanceTdToken(deployer, network, accounts);
 
-  console.log("-------Exercice10---------");
+  // console.log("-------Exercice10---------");
 
-  ExerciceSolution = await exerciceSolution.new(
-    MineERC20.address,
-    "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
-    { from: account, value: "1000000000000000" }
+  // ExerciceSolution = await exerciceSolution.new(
+  //   MineERC20.address,
+  //   "0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D",
+  //   { from: account, value: "120000000000000000" }
+  // );
+  // console.log("ExerciceSolution " + ExerciceSolution.address);
+
+  // await MineERC20.transfer(ExerciceSolution.address, "2000000000000000000000", {
+  //   from: account,
+  // });
+
+  // WethERC20 = await tokenStandard.at(wethAddress);
+  // await Evaluator.submitExercice(ExerciceSolution.address, { from: account });
+  // await WethERC20.transfer(ExerciceSolution.address, "100000000000000000", {
+  //   from: account,
+  // });
+  // await ExerciceSolution.swapYourTokenForEth();
+
+  // await ExerciceSolution.addLiquidity();
+  // await Evaluator.ex9_contractCanSwapVsDummyToken({ from: account });
+  // await getBalanceTdToken(deployer, network, accounts);
+
+  console.log("-------Exercice11---------");
+  ExerciceSolution = await exerciceSolution.at(
+    "0xb43720A2535123f5D3Cc8514E722eE827218C3A5"
   );
   console.log("ExerciceSolution " + ExerciceSolution.address);
 
-  await MineERC20.transfer(ExerciceSolution.address, "2000000000000000000000", {
-    from: account,
-  });
-
-  // await Evaluator.submitExercice(ExerciceSolution.address, { from: account });
-
-  await ExerciceSolution.swapYourTokenForEth();
-
-  await ExerciceSolution.addLiquidity();
-  // await Evaluator.ex9_contractCanSwapVsDummyToken({ from: account });
-  // await getBalanceTdToken(deployer, network, accounts);
+  await ExerciceSolution.withdrawLiquiditydeux();
 }
